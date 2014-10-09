@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="./index.css">
+	<title>L U N C H</title>
+</head>
+<body>
+	<button id="LUNCH">LUNCH</button>
+
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	  var socket = io();
+	</script>
+	
+	<script src="./index.js"></script>
+	<script>
+		window.onload = function() {
+			MB.LunchTime.init(socket);
+		}
+	</script>
+</body>
+</html>
