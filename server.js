@@ -17,7 +17,9 @@ io.on('connection', function(socket) {
 
 	socket.on('btnClick', function(msg) {
 		console.log(msg);
-		playSound();
+		if(stream !== undefined)
+			stopSound();
+		playSound(msg.toLowerCase());
 	});
 
 	socket.on('disconnect', function() {
@@ -35,20 +37,26 @@ http.listen(1337, function() {
 ////////////////////
 
 
-function playSound() {
+function playSound(sound) {
 	var fs = require('fs');
 	var lame = require('lame');
 	var Speaker = require('speaker');
 	 
-	stream = fs.createReadStream('./public/lunch.mp3')
-	  .pipe(new lame.Decoder())
-	  .on('format', function (format) {
-	    this.pipe(new Speaker(format));
-	  });
+	stream = fs.createReadStream('./public/' + sound + '.mp3');
+
+	stream.on('error', function(error) {
+		console.log('error reading the file/stream');
+	  	return;
+	 });
+
+	stream.pipe(new lame.Decoder())
+		  .on('format', function (format) {
+		this.pipe(new Speaker(format));
+	});
 }
 
 function stopSound() {
 	if(stream !== undefined) {
-		stream.end();
+		stream.close();
 	}
 }
